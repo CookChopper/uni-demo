@@ -1,5 +1,6 @@
 <template>
   <view>
+    <my-search @click="searchClick"></my-search>
     <view class="scroll-view-container">
       <scroll-view scroll-y="true"  class="scroll-view-left" :style="{height:wh + 'px'}">
         <view class="scroll-left-item" v-for="(item,i) in cateList" :key="i" :class="[i === active ? 'active' : '']" @click="activeChanged(i)">
@@ -38,7 +39,7 @@
     async onLoad(){
       // 获取屏幕可使用高度
       const sysInfo = await uni.getSystemInfo()
-      this.wh = sysInfo[1].windowHeight
+      this.wh = sysInfo[1].windowHeight - 60
       
       this.getCateList()
     },
@@ -70,6 +71,14 @@
         uni.navigateTo({
           url: '/subpkg/goods_list/goods_list?cid=' + item.cat_id
         })
+      },
+      /**
+       * 搜索点击事件
+       */
+      searchClick(){
+        uni.navigateTo({
+               url: '/subpkg/search/search'
+             })
       }
     }
   }

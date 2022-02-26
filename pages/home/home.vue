@@ -1,5 +1,8 @@
 <template>
   <view>
+    <view class="searchBox">
+      <my-search @click="searchClick"></my-search>
+    </view>
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" >
       <swiper-item v-for="(item,i) in swiperList" :key="i">
         <navigator class="swiper-item" :url="`/subpkg/goods_detail/goods_detail?goods_id=${item.goods_id}`">
@@ -90,6 +93,14 @@
             url: '/pages/cate/cate'
           })
         }
+      },
+      /**
+       * 点击搜索事件
+       */
+      searchClick(){
+        uni.navigateTo({
+               url: '/subpkg/search/search'
+             })
       }
     }
   }
@@ -134,5 +145,10 @@ swiper {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+.searchBox{
+  position: sticky;
+  top:0;
+  z-index:99;
 }
 </style>
