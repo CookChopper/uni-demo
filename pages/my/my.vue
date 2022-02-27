@@ -5,7 +5,9 @@
 </template>
 
 <script>
+ import badgeMixin from '../../mixins/badgeMixin.js'
   export default {
+    mixins:[badgeMixin],
     data() {
       return {
         

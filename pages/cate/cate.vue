@@ -25,7 +25,9 @@
 </template>
 
 <script>
+ import badgeMixin from '../../mixins/badgeMixin.js'
   export default {
+    mixins:[badgeMixin],
     data() {
       return {
         wh: 0, // 屏幕可使用高度

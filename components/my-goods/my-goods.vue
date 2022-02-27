@@ -1,14 +1,18 @@
 <template>
-  <view class="goods-item" @click="goToGoodsDetail(goods)">
-    <view class="goods-item-left">
-      <image :src="goods.goods_small_logo || defaultPic" mode=""></image>
+  <view class="goods-item" >
+    <view class="goods-item-left" >
+      <radio :checked="goods.goods_status" color="#C00000" v-if="showRadio" @click="ridioClickHandler" />
+      <image :src="goods.goods_small_logo || defaultPic" mode="" @click="goToGoodsDetail(goods)"></image>
     </view>
-    <view class="goods-item-right">
+    <view class="goods-item-right" >
       <view class="goods-name">
         {{goods.goods_name}}
       </view>
-      <view class="goods-price">
-        ¥{{goods.goods_price | tofixed}}
+      <view class="goods-info">
+        <view class="goods-price">
+          ¥{{goods.goods_price | tofixed}}
+        </view>
+        <uni-number-box :min="1" v-model="goods.goods_count" v-if="showCount" @change="countChangeHandler"></uni-number-box>
       </view>
     </view>
   </view>
@@ -21,6 +25,14 @@
       goods: {
         type: Object,
         default: () => ({})
+      },
+      showRadio:{
+        type: Boolean,
+        default: false
+      },
+      showCount: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -29,9 +41,24 @@
       };
     },
     methods:{
+      // 跳转详情页
       goToGoodsDetail(item){
         uni.navigateTo({
           url: '/subpkg/goods_detail/goods_detail?goods_id=' + item.goods_id
+        })
+      },
+      // 单选框点击事件
+      ridioClickHandler(){
+        this.$emit('radio-change',{
+          goods_id: this.goods.goods_id,
+          goods_status : !this.goods.goods_status
+        })
+      },
+      // 数量输入框变化事件
+      countChangeHandler(val){
+        this.$emit('count-change',{
+          goods_id: this.goods.goods_id,
+          goods_count: +val
         })
       }
     },
@@ -50,6 +77,8 @@
     border-bottom: 1px solid #efefef;
     .goods-item-left{
       margin-right: 10px;
+      display: flex;
+      align-items: center;
       image {
         display: block;
         width: 120px;
@@ -63,9 +92,13 @@
       .goods-name{
         font-size: 13px;
       }
-      .goods-price{
-        font-size: 16px;
-        color: #C00000;
+      .goods-info{
+        display: flex;
+        justify-content: space-between;
+        .goods-price{
+          font-size: 16px;
+          color: #C00000;
+        }
       }
     }
   }

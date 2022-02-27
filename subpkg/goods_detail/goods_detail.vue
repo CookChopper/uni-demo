@@ -29,6 +29,7 @@
 </template>
 
 <script>
+  import { mapMutations,mapGetters } from 'vuex'
   export default {
     data() {
       return {
@@ -60,6 +61,7 @@
       this.getGoodsDetail(goods_id)
     },
     methods: {
+      ...mapMutations('m_cart',['addToCart']),
       // 获取商品详情
       async getGoodsDetail(goods_id){
         const { data:res } = await uni.$http.get('/api/public/v1/goods/detail',{goods_id})
@@ -84,7 +86,29 @@
       },
       // 商品导航右侧按钮
       buttonClick(e){
-        console.log(e)
+        if(e.content.text === "加入购物车"){
+          // console.log(1)
+          const goods = {
+            goods_id : this.goodsInfo.goods_id,
+            goods_name : this.goodsInfo.goods_name,
+            goods_price : this.goodsInfo.goods_price,
+            goods_count : 1,
+            goods_status : true,
+            goods_small_logo: this.goodsInfo.goods_small_logo
+          }
+          this.addToCart(goods)
+        }
+      }
+    },
+    computed:{
+      ...mapGetters('m_cart',['total'])
+    },
+    watch: {
+      total:{
+        handler(newVal){
+          this.options[1].info = newVal
+        },
+        immediate: true
       }
     }
   }

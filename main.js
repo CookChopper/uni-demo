@@ -1,5 +1,5 @@
 import App from './App'
-
+import store from './store/index.js'
 // 第三方request请求函数
 import { $http } from '@escook/request-miniprogram'
 // 挂载到uni
@@ -29,7 +29,8 @@ import Vue from 'vue'
 Vue.config.productionTip = false
 App.mpType = 'app'
 const app = new Vue({
-    ...App
+    ...App,
+    store
 })
 app.$mount()
 // #endif
